@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Experiment 3.3</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    margin: 20px;
+}
+
+.nav button {
+    padding: 10px 20px;
+    margin: 10px;
+    background: cyan;
+    border: none;
+    cursor: pointer;
+}
+
+.section {
+    display: none;
+    margin-top: 20px;
+}
+
+.box {
+    background: #1e293b;
+    padding: 20px;
+    margin: 20px auto;
+    width: 300px;
+    border-radius: 10px;
+}
+
+input, textarea {
+    padding: 10px;
+    margin: 5px;
+    width: 90%;
+}
+
+button {
+    padding: 10px;
+    margin: 5px;
+}
+
+.post {
+    background: #334155;
+    padding: 10px;
+    margin: 10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>📘 Experiment 3.3</h1>
+
+<div class="nav">
+    <button onclick="show('todo')">3.3.1 Todo</button>
+    <button onclick="show('blog')">3.3.2 Blog</button>
+    <button onclick="show('social')">3.3.3 Social</button>
+</div>
+
+<!-- ================= TODO ================= -->
+<div id="todo" class="section">
+<h2>📝 Todo App</h2>
+
+<input id="task" placeholder="Enter task">
+<button onclick="addTask()">Add</button>
+
+<div id="todoList"></div>
+</div>
+
+<!-- ================= BLOG ================= -->
+<div id="blog" class="section">
+<h2>📰 Blog App</h2>
+
+<input id="btitle" placeholder="Title">
+<textarea id="bcontent"></textarea>
+<button onclick="addPost()">Post</button>
+
+<div id="blogList"></div>
+</div>
+
+<!-- ================= SOCIAL ================= -->
+<div id="social" class="section">
+<h2>📱 Social App</h2>
+
+<input id="spost" placeholder="Write post">
+<button onclick="addSocial()">Post</button>
+
+<div id="socialFeed"></div>
+</div>
+
+<script>
+// Show Sections
+function show(id){
+document.querySelectorAll('.section').forEach(s=>s.style.display="none");
+document.getElementById(id).style.display="block";
+}
+
+// ================= TODO =================
+let todos = [];
+
+function addTask(){
+const text = task.value;
+if(!text) return;
+
+todos.push(text);
+task.value="";
+renderTodo();
+}
+
+function renderTodo(){
+todoList.innerHTML="";
+todos.forEach((t,i)=>{
+todoList.innerHTML+=`
+<div class="box">
+${t}
+<button onclick="delTask(${i})">Delete</button>
+</div>`;
+});
+}
+
+function delTask(i){
+todos.splice(i,1);
+renderTodo();
+}
+
+// ================= BLOG =================
+let posts = [];
+
+function addPost(){
+const title = btitle.value;
+const content = bcontent.value;
+
+if(!title || !content) return;
+
+posts.push({title,content});
+btitle.value="";
+bcontent.value="";
+renderBlog();
+}
+
+function renderBlog(){
+blogList.innerHTML="";
+posts.forEach(p=>{
+blogList.innerHTML+=`
+<div class="post">
+<b>${p.title}</b><br>${p.content}
+</div>`;
+});
+}
+
+// ================= SOCIAL =================
+let socialPosts = [];
+
+function addSocial(){
+const text = spost.value;
+if(!text) return;
+
+socialPosts.push({text,likes:0});
+spost.value="";
+renderSocial();
+}
+
+function renderSocial(){
+socialFeed.innerHTML="";
+socialPosts.forEach((p,i)=>{
+socialFeed.innerHTML+=`
+<div class="post">
+${p.text}<br>
+👍 ${p.likes}
+<button onclick="like(${i})">Like</button>
+</div>`;
+});
+}
+
+function like(i){
+socialPosts[i].likes++;
+renderSocial();
+}
+</script>
+
+</body>
+</html>
